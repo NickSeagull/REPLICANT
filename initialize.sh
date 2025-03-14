@@ -10,9 +10,13 @@ if [[ "$(id -u)" -ne 0 ]]; then
 fi
 
 ### Install Dependencies ###
+echo "INSTALLING DEPENDENCIES"
 apt update && apt install -y curl jq git sudo
 
 ### Install Bitwarden CLI ###
+echo "INSTALLING BITWARDEN"
+
+# FIXME: THIS IS NOT WORKING
 curl -fsSL https://github.com/bitwarden/cli/releases/latest/download/bw-linux-$(uname -m) -o /usr/local/bin/bw
 chmod +x /usr/local/bin/bw
 
