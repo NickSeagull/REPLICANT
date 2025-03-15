@@ -6,6 +6,9 @@
 curl -fsSL https://github.com/NickSeagull/REPLICANT/raw/refs/heads/main/initialize.sh | bash
 ```
 
+## Look for options and packages
+
+https://mynixos.com/
 
 
 ## Updating

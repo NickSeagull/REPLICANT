@@ -2,7 +2,9 @@
 {
     home = {
         packages = with pkgs; [
-          hello
+          git
+          bitwarden-cli
+          nixpkgs-fmt
         ];
 
         username = "nick";
