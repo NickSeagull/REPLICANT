@@ -29,7 +29,14 @@ sh <(curl -L https://nixos.org/nix/install) --daemon --yes
 mkdir -p /home/nick/.config/nix
 echo 'experimental-features = nix-command flakes' >> /home/nick/.config/nix/nix.conf
 
-# Any other setup steps
+# Pick up changes in bashrc
+source ~/.bashrc
+
+# Install home manager
+nix-channel --add https://nixos.org/channels/nixpkgs-unstable nixpkgs
+nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
+nix-channel --update
+nix-shell '<home-manager>' -A install
 EOF
 
 echo "Setup completed!"
