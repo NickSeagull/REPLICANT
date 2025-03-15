@@ -28,10 +28,10 @@ echo "Now running as $(whoami)..."
 sh <(curl -L https://nixos.org/nix/install) --daemon --yes
 mkdir -p /home/nick/.config/nix
 echo 'experimental-features = nix-command flakes' >> /home/nick/.config/nix/nix.conf
+EOF
 
-# Pick up changes in bashrc
-source ~/.bashrc
-
+# Restart shell
+su - nick <<'EOF'
 # Install home manager
 nix-channel --add https://nixos.org/channels/nixpkgs-unstable nixpkgs
 nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
