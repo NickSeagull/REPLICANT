@@ -17,12 +17,11 @@
         pkgs = import nixpkgs { inherit system; };
       in {
           homeConfigurations = {
-            nick = {
+            nick = 
                 home-manager.lib.homeManagerConfiguration {
                     inherit pkgs;
                     modules = [ ./home.nix ];
                   };
               };
-            };
         };
   }
