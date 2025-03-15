@@ -2,7 +2,6 @@
 {
     home = {
         packages = with pkgs; [
-          git
           bitwarden-cli
           nixpkgs-fmt
         ];
@@ -13,6 +12,11 @@
         stateVersion = "24.11";
       };
         programs = {
+            git = {
+                enable = true;
+                userEmail = "github@nickseagull.dev";
+                userName = "Nikita Tchayka";
+              };
             home-manager = {
                 enable = true;
               };
