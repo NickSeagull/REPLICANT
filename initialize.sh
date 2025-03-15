@@ -42,4 +42,40 @@ echo 'source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh' > .bashrc
 source ~/.bashrc
 EOF
 
+### Fetch SSH keys using Bitwarden CLI ###
+su - nick <<'EOF'
+echo "Fetching SSH keys using Bitwarden CLI..."
+
+# Run a temporary nix-shell with bitwarden-cli and jq
+nix-shell -p bitwarden-cli jq git --run '
+
+# Ensure Bitwarden is unlocked
+if ! bw status | grep -q "unlocked"; then
+    echo "Logging into Bitwarden..."
+    export BW_SESSION=$(bw unlock --raw)  # Unlock and store session key
+fi
+
+PRIVATE_KEY=$(bw get item "06402220-1908-4042-af30-b230011e2a82" | jq -r ".notes" | sed -E 's/(-----BEGIN .*-----) (.*) (-----END .*-----)/\1\n\2\n\3/')
+PUBLIC_KEY=$(bw get item "57624b62-29a6-4511-b5f7-b230011eec2b" | jq -r ".notes")
+
+# Store keys in ~/.ssh
+mkdir -p ~/.ssh
+echo "$PRIVATE_KEY" > ~/.ssh/id_ed25519
+echo "$PUBLIC_KEY" > ~/.ssh/id_ed25519.pub
+
+# Set correct permissions
+chmod 600 ~/.ssh/id_ed25519
+chmod 644 ~/.ssh/id_ed25519.pub
+
+# Add key to SSH agent
+eval $(ssh-agent -s)
+ssh-add ~/.ssh/id_ed25519
+
+echo "SSH key added successfully!"
+
+git clone git@github.com:NickSeagull/REPLICANT.git ~/.replicant
+'
+
+EOF
+
 echo "Setup completed!"
