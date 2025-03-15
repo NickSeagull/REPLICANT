@@ -1,6 +1,18 @@
 # REPLICANT
 
+## Installing 
 
+```bash
+curl -fsSL https://github.com/NickSeagull/REPLICANT/raw/refs/heads/main/initialize.sh | bash
+```
+
+
+
+## Updating
+
+```bash
+git pull && home-manager switch --flake .#nick
+```
 
 ## Developing (assuming you're on Ubuntu)
 
