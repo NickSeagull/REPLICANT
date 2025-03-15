@@ -22,6 +22,9 @@ chown -R nick:nick /home/nick
 
 ### Switch to 'nick' user and continue installation ###
 su - nick <<'EOF'
+# Skip if nix is already installed
+command -v nix >/dev/null && exit
+
 set -e  # Ensure errors cause exit in the new shell
 echo "Now running as $(whoami)..."
 
@@ -32,6 +35,9 @@ EOF
 
 # Restart shell
 su - nick <<'EOF'
+# Skip if home-manager is already installed
+command -v home-manager >/dev/null && exit
+
 # Install home manager
 nix-channel --add https://nixos.org/channels/nixpkgs-unstable nixpkgs
 nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
@@ -55,7 +61,7 @@ if ! bw status | grep -q "unlocked"; then
     export BW_SESSION=$(bw unlock --raw)  # Unlock and store session key
 fi
 
-PRIVATE_KEY=$(bw get item "06402220-1908-4042-af30-b230011e2a82" | jq -r ".notes" | sed -E 's/(-----BEGIN .*-----) (.*) (-----END .*-----)/\1\n\2\n\3/')
+PRIVATE_KEY=$(bw get item "06402220-1908-4042-af30-b230011e2a82" | jq -r ".notes" | sed -E "s/(-----BEGIN .*-----) (.*) (-----END .*-----)/\1\n\2\n\3/")
 PUBLIC_KEY=$(bw get item "57624b62-29a6-4511-b5f7-b230011eec2b" | jq -r ".notes")
 
 # Store keys in ~/.ssh
