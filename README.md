@@ -13,6 +13,7 @@ sudo snap install multipass
 Launch a shell with:
 
 ```bash
+multipass launch lts --name primary --memory 4G --disk 50G --cpus 4
 multipass shell
 ```
 
