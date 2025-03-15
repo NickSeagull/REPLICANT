@@ -9,40 +9,27 @@ if [[ "$(id -u)" -ne 0 ]]; then
     exit 1
 fi
 
-### Install Dependencies ###
-echo "INSTALLING DEPENDENCIES"
-apt update && apt install -y curl jq git sudo
+### Check if user 'nick' already exists ###
+if ! id "nick" &>/dev/null; then
+    echo "Creating user 'nick'..."
+    useradd -m -s /bin/bash -G sudo,adm,dialout,cdrom,floppy,audio,dip,video,plugdev,netdev,lpadmin,lxd -U nick
+    echo "nick ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/nick
+    chmod 0440 /etc/sudoers.d/nick
+fi
 
-### Install Bitwarden CLI ###
-echo "INSTALLING BITWARDEN"
+### Ensure correct home directory ownership ###
+chown -R nick:nick /home/nick
 
-# FIXME: THIS IS NOT WORKING
-curl -fsSL https://github.com/bitwarden/cli/releases/latest/download/bw-linux-$(uname -m) -o /usr/local/bin/bw
-chmod +x /usr/local/bin/bw
+### Switch to 'nick' user and continue installation ###
+su - nick <<'EOF'
+set -e  # Ensure errors cause exit in the new shell
+echo "Now running as $(whoami)..."
 
-### Prompt for Bitwarden Login ###
-echo "Logging into Bitwarden CLI..."
-export BW_SESSION=$(bw login --raw)
-bw unlock --raw > /root/.bw_session
+sh <(curl -L https://nixos.org/nix/install) --daemon --no-confirm
+mkdir -p /home/nick/.config/nix
+echo 'experimental-features = nix-command flakes' >> /home/nick/.config/nix/nix.conf
 
-### Create 'nick' user with appropriate groups ###
-useradd -m -s /bin/bash -G sudo,adm,dialout,cdrom,floppy,audio,dip,video,plugdev,netdev,lpadmin,lxd -U nick
-echo "nick ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/nick
+# Any other setup steps
+EOF
 
-### Retrieve SSH Keys from Bitwarden ###
-echo "Fetching SSH key from Bitwarden..."
-mkdir -p /home/nick/.ssh
-bw get item "GitHub SSH Private Key" | jq -r '.notes' > /home/nick/.ssh/id_ed25519
-chmod 600 /home/nick/.ssh/id_ed25519
-chown -R nick:nick /home/nick/.ssh
-
-### Install Nix via Determinate Systems Installer ###
-echo "Installing Nix..."
-curl -L https://install.determinate.systems/nix | bash
-
-### Clone REPLICANT Repository ###
-sudo -u nick git clone git@github.com:NickSeagull/REPLICANT.git /home/nick/.replicant
-chown -R nick:nick /home/nick/.replicant
-
-echo "Initialization complete. Login SSH into nick and continue run the setup."
-
+echo "Setup completed!"
