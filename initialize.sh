@@ -17,6 +17,9 @@ if ! id "nick" &>/dev/null; then
     chmod 0440 /etc/sudoers.d/nick
 fi
 
+read -p "Enter Bitwarden email: " BW_EMAIL && echo "$BW_EMAIL" > /home/nick/.bw_email
+read -s -p "Enter Bitwarden master password: " BW_MASTER && echo "$BW_MASTER" > /home/nick/.bw_master
+
 ### Ensure correct home directory ownership ###
 chown -R nick:nick /home/nick
 
@@ -55,10 +58,15 @@ echo "Fetching SSH keys using Bitwarden CLI..."
 # Run a temporary nix-shell with bitwarden-cli and jq
 nix-shell -p bitwarden-cli jq git --run '
 
+set -e
+set -u
+
 # Ensure Bitwarden is unlocked
 if ! bw status | grep -q "unlocked"; then
     echo "Logging into Bitwarden..."
-    export BW_SESSION=$(bw unlock --raw)  # Unlock and store session key
+    export BW_EMAIL=$(cat /home/nick/.bw_email)
+    export BW_MASTER=$(cat /home/nick/.bw_master)
+    export BW_SESSION=$(bw login $BW_EMAIL $BW_MASTER --raw)  # Unlock and store session key
 fi
 
 PRIVATE_KEY=$(bw get item "06402220-1908-4042-af30-b230011e2a82" | jq -r ".notes" | sed -E "s/(-----BEGIN .*-----) (.*) (-----END .*-----)/\1\n\2\n\3/")
@@ -79,9 +87,15 @@ ssh-add ~/.ssh/id_ed25519
 
 echo "SSH key added successfully!"
 
+# Allow cloning from github using SSH
+ssh-keyscan -H github.com >> ~/.ssh/known_hosts
 git clone git@github.com:NickSeagull/REPLICANT.git ~/.replicant
 '
 
 EOF
+
+rm /home/nick/.bw_email
+rm /home/nick/.bw_master
+
 
 echo "Setup completed!"
