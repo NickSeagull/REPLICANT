@@ -8,6 +8,11 @@
           home-manager
         ];
 
+
+        username = "nick";
+        homeDirectory = "/home/nick/";
+        stateVersion = "24.11";
+      };
         programs = {
             home-manager = {
                 enable = true;
@@ -16,9 +21,4 @@
                 enable = true;
               };
           };
-
-        username = "nick";
-        homeDirectory = "/home/nick/";
-        stateVersion = "24.11";
-      };
   }
