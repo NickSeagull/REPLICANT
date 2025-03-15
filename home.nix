@@ -6,7 +6,7 @@
         ];
 
         username = "nick";
-        homeDirectory = "/home/linuxbrew/";
+        homeDirectory = "/home/nick/";
 
         stateVersion = "24.11";
       };
