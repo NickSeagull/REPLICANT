@@ -53,6 +53,7 @@ EOF
 
 ### Fetch SSH keys using Bitwarden CLI ###
 su - nick <<'EOF'
+[ -e ~/.ssh/id_ed25519 ] && exit
 echo "Fetching SSH keys using Bitwarden CLI..."
 
 # Run a temporary nix-shell with bitwarden-cli and jq
@@ -89,10 +90,17 @@ echo "SSH key added successfully!"
 
 # Allow cloning from github using SSH
 ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+
+[ -e ~/.replicant ] && exit
 git clone git@github.com:NickSeagull/REPLICANT.git ~/.replicant
 '
-
 EOF
+
+su - nick <<'EOF'
+cd ~/.replicant
+home-manager switch --flake .#nick
+EOF
+
 
 rm /home/nick/.bw_email
 rm /home/nick/.bw_master
