@@ -5,7 +5,6 @@
           git
           bitwarden-cli
           nixpkgs-fmt
-          home-manager
         ];
 
 
