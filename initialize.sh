@@ -25,7 +25,7 @@ su - nick <<'EOF'
 set -e  # Ensure errors cause exit in the new shell
 echo "Now running as $(whoami)..."
 
-sh <(curl -L https://nixos.org/nix/install) --daemon --no-confirm
+sh <(curl -L https://nixos.org/nix/install) --daemon --yes
 mkdir -p /home/nick/.config/nix
 echo 'experimental-features = nix-command flakes' >> /home/nick/.config/nix/nix.conf
 
