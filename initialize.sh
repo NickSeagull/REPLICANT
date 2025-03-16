@@ -18,7 +18,7 @@ if ! id "nick" &>/dev/null; then
 fi
 
 read -p "Enter Bitwarden email: " BW_EMAIL && echo "$BW_EMAIL" > /home/nick/.bw_email
-read -s -p "Enter Bitwarden master password: " BW_MASTER && echo "$BW_MASTER" > /home/nick/.bw_master
+read -p "Enter Bitwarden master password: " BW_MASTER && echo "$BW_MASTER" > /home/nick/.bw_master
 
 ### Ensure correct home directory ownership ###
 chown -R nick:nick /home/nick
