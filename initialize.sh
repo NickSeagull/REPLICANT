@@ -1,24 +1,27 @@
 #!/bin/bash
 
-set -e  # Exit immediately on error
-set -u  # Treat unset variables as errors
+set -e # Exit immediately on error
+set -u # Treat unset variables as errors
 
 ### Ensure running as root ###
 if [[ "$(id -u)" -ne 0 ]]; then
-    echo "This script must be run as root!" >&2
-    exit 1
+  echo "This script must be run as root!" >&2
+  exit 1
 fi
 
 ### Check if user 'nick' already exists ###
 if ! id "nick" &>/dev/null; then
-    echo "Creating user 'nick'..."
-    useradd -m -s /bin/bash -G sudo,adm,dialout,cdrom,floppy,audio,dip,video,plugdev,netdev,lxd -U nick
-    echo "nick ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/nick
-    chmod 0440 /etc/sudoers.d/nick
+  echo "Creating user 'nick'..."
+  useradd -m -s /bin/bash -G sudo,adm,dialout,cdrom,floppy,audio,dip,video,plugdev,netdev,lxd -U nick
+  echo "nick ALL=(ALL) NOPASSWD:ALL" >/etc/sudoers.d/nick
+  chmod 0440 /etc/sudoers.d/nick
 fi
 
-read -p "Enter Bitwarden email: " BW_EMAIL && echo "$BW_EMAIL" > /home/nick/.bw_email
-read -p "Enter Bitwarden master password: " BW_MASTER && echo "$BW_MASTER" > /home/nick/.bw_master
+[ -z "$BW_EMAIL" ] && read -p "Enter Bitwarden email: " BW_EMAIL
+[ -z "$BW_MASTER" ] && read -s -p "Enter Bitwarden master password: " BW_MASTER
+
+echo "$BW_EMAIL" >/home/nick/.bw_email
+echo "$BW_MASTER" >/home/nick/.bw_master
 
 ### Ensure correct home directory ownership ###
 chown -R nick:nick /home/nick
@@ -101,9 +104,7 @@ cd ~/.replicant
 home-manager switch --flake .#nick
 EOF
 
-
 rm /home/nick/.bw_email
 rm /home/nick/.bw_master
-
 
 echo "Setup completed!"
