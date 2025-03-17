@@ -9,6 +9,8 @@ if [[ "$(id -u)" -ne 0 ]]; then
   exit 1
 fi
 
+apt update && apt install -y curl openssh-server xz
+
 ### Check if user 'nick' already exists ###
 if ! id "nick" &>/dev/null; then
   echo "Creating user 'nick'..."
