@@ -17,11 +17,15 @@ if ! id "nick" &>/dev/null; then
   chmod 0440 /etc/sudoers.d/nick
 fi
 
-[ -z "$BW_EMAIL" ] && read -p "Enter Bitwarden email: " BW_EMAIL
-[ -z "$BW_MASTER" ] && read -s -p "Enter Bitwarden master password: " BW_MASTER
+if [ ! -f /home/nick/.bw_email ]; then
+  [ -z "$BW_EMAIL" ] && read -p "Enter Bitwarden email: " BW_EMAIL
+  echo "$BW_EMAIL" >/home/nick/.bw_email
+fi
 
-echo "$BW_EMAIL" >/home/nick/.bw_email
-echo "$BW_MASTER" >/home/nick/.bw_master
+if [ ! -f /home/nick/.bw_master ]; then
+  [ -z "$BW_MASTER" ] && read -s -p "Enter Bitwarden master password: " BW_MASTER
+  echo "$BW_MASTER" >/home/nick/.bw_master
+fi
 
 ### Ensure correct home directory ownership ###
 chown -R nick:nick /home/nick
