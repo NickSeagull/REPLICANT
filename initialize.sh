@@ -44,8 +44,12 @@ command -v nix >/dev/null && exit
 
 set -e  # Ensure errors cause exit in the new shell
 echo "Now running as $(whoami)..."
-
-sh <(curl -L https://nixos.org/nix/install) --daemon --yes
+if [ -f /run/.dockerenv ]; then
+  echo "Running inside Docker"
+  sh <(curl -L https://nixos.org/nix/install) --no-daemon --yes
+else
+  sh <(curl -L https://nixos.org/nix/install) --daemon --yes
+fi
 mkdir -p /home/nick/.config/nix
 echo 'experimental-features = nix-command flakes' >> /home/nick/.config/nix/nix.conf
 EOF
