@@ -18,6 +18,10 @@ if ! id "nick" &>/dev/null; then
   chmod 0440 /etc/sudoers.d/nick
 fi
 
+# Move tmp creds into place
+[ -f /tmp/bw_email ] && mv /tmp/bw_email /home/nick/.bw_email
+[ -f /tmp/bw_master ] && mv /tmp/bw_master /home/nick/.bw_master
+
 if [ ! -f /home/nick/.bw_email ]; then
   [ -z "$BW_EMAIL" ] && read -p "Enter Bitwarden email: " BW_EMAIL
   echo "$BW_EMAIL" >/home/nick/.bw_email
