@@ -13,6 +13,7 @@ fi
 if ! id "nick" &>/dev/null; then
   echo "Creating user 'nick'..."
   useradd -m -s /bin/bash -G sudo,adm,dialout,cdrom,floppy,audio,dip,video,plugdev -U nick
+  mkdir -p /etc/sudoers.d
   echo "nick ALL=(ALL) NOPASSWD:ALL" >/etc/sudoers.d/nick
   chmod 0440 /etc/sudoers.d/nick
 fi
