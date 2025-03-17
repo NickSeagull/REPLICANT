@@ -12,7 +12,7 @@ fi
 ### Check if user 'nick' already exists ###
 if ! id "nick" &>/dev/null; then
   echo "Creating user 'nick'..."
-  useradd -m -s /bin/bash -G sudo,adm,dialout,cdrom,floppy,audio,dip,video,plugdev,netdev,lxd -U nick
+  useradd -m -s /bin/bash -G sudo,adm,dialout,cdrom,floppy,audio,dip,video,plugdev -U nick
   echo "nick ALL=(ALL) NOPASSWD:ALL" >/etc/sudoers.d/nick
   chmod 0440 /etc/sudoers.d/nick
 fi
