@@ -13,6 +13,8 @@
     fontconfig
 
     nixfmt-classic # :lang nix
+    ispell # spellcheck
+    shellcheck # for checking bash files
   ];
 
   fonts.fontconfig.enable = true;
