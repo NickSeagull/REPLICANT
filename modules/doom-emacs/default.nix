@@ -36,5 +36,5 @@
     url = "https://github.com/doomemacs/doomemacs.git";
     rev = "466490c252d06f42a9c165f361de74a6e6abad8d";
   };
-  xdg.configFile."doom".source = ./doom-emacs; # Note! This must match $DOOMDIR
+  xdg.configFile."doom".source = ./doom.d; # Note! This must match $DOOMDIR
 }
