@@ -1,15 +1,16 @@
 { config, pkgs, ... }:
 
 {
-  home.packages = [
+  home.packages = with pkgs; [
     # Indexing / search dependencies
-    pkgs.fd
-    (pkgs.ripgrep.override {withPCRE2 = true;})
+    fd
+    (ripgrep.override {withPCRE2 = true;})
 
     # Font / icon config
-    pkgs.emacs-all-the-icons-fonts
+    emacs-all-the-icons-fonts
+    nerd-fonts.symbols-only
 
-    pkgs.nixfmt-classic # :lang nix
+    nixfmt-classic # :lang nix
   ];
 
   # Note that session variables and path can be a bit wonky to get going. To be
