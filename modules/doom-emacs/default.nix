@@ -4,14 +4,18 @@
   home.packages = with pkgs; [
     # Indexing / search dependencies
     fd
-    (ripgrep.override {withPCRE2 = true;})
+    (ripgrep.override { withPCRE2 = true; })
 
     # Font / icon config
     emacs-all-the-icons-fonts
     nerd-fonts.symbols-only
+    maple-mono
+    fontconfig
 
     nixfmt-classic # :lang nix
   ];
+
+  fonts.fontconfig.enable = true;
 
   # Note that session variables and path can be a bit wonky to get going. To be
   # on the safe side, logging out and in again usually works.
@@ -26,7 +30,6 @@
   home.sessionPath = [ "${config.xdg.configHome}/emacs/bin" ];
 
   programs.emacs.enable = true;
-
 
   # Note! This must match $EMACSDIR
   xdg.configFile."emacs".source = builtins.fetchGit {

@@ -22,7 +22,7 @@
           home-manager.lib.homeManagerConfiguration {
             inherit pkgs;
             modules = [
-              ./modules/doom-emacs.nix
+              ./modules/doom-emacs/default.nix
               ./home.nix
             ];
           };
