@@ -1,6 +1,6 @@
 # REPLICANT
 
-## Installing 
+## Installing
 
 ```bash
 curl -fsSL https://github.com/NickSeagull/REPLICANT/raw/refs/heads/main/initialize.sh | bash
@@ -48,3 +48,8 @@ Either the one in main, or branch, or whatever.
 curl -fsSL https://github.com/NickSeagull/REPLICANT/raw/refs/heads/main/initialize.sh | bash
 ```
 
+## Doom Emacs
+
+- Restart the terminal or source ~/.nix-profile/etc/profile.d/hm-session-vars.sh
+- Ensure that $DOOMDIR etc. pont to the right location, then run doom install
+- Continuously run home-manager switch --flake and doom sync when your environment changes

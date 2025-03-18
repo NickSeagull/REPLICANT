@@ -23,5 +23,8 @@
     fish = {
       enable = true;
     };
+    emacs = {
+      enable = true;
+    };
   };
 }
