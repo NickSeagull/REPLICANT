@@ -32,6 +32,7 @@
   home.sessionPath = [ "${config.xdg.configHome}/emacs/bin" ];
 
   programs.emacs.enable = true;
+  services.emacs.enable = true;
 
   # Note! This must match $EMACSDIR
   xdg.configFile."emacs".source = builtins.fetchGit {
