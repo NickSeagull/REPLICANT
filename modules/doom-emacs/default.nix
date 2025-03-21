@@ -32,9 +32,9 @@
   home.sessionPath = [ "${config.xdg.configHome}/emacs/bin" ];
 
   programs.emacs.enable = true;
-  services.emacs.enable = true;
 
-  # Note! This must match $EMACSDIR
+  services.emacs = { enable = true; };
+
   xdg.configFile."emacs".source = builtins.fetchGit {
     url = "https://github.com/doomemacs/doomemacs.git";
     rev = "466490c252d06f42a9c165f361de74a6e6abad8d";
