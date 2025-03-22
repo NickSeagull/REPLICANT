@@ -15,6 +15,8 @@
     nixfmt-classic # :lang nix
     ispell # spellcheck
     shellcheck # for checking bash files
+    sqlite # org-roam
+    hugo
   ];
 
   fonts.fontconfig.enable = true;
@@ -32,8 +34,6 @@
   home.sessionPath = [ "${config.xdg.configHome}/emacs/bin" ];
 
   programs.emacs.enable = true;
-
-  services.emacs = { enable = true; };
 
   xdg.configFile."emacs".source = builtins.fetchGit {
     url = "https://github.com/doomemacs/doomemacs.git";
